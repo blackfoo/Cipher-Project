@@ -7,10 +7,12 @@
 
 void encryptRotationCi (void);
 
+void decryptRotationCi (void);
+
 int main()
 {
     // create task menu for user.
-    char option = 'a';
+    char option = 'b';
     
     printf("\nWassup'?! Select a task to operate below by entering 'a', 'b','c' or 'd' followed by the 'Enter' key.\n\n");
     printf("(a) Encrypt a word with rotation cipher!\n");
@@ -23,8 +25,8 @@ int main()
     switch (option) {
         case 'a': encryptRotationCi ();
                   break;
-        //case 'b': decryptRotationCi ();
-        //          break;
+        case 'b': decryptRotationCi ();
+                  break;
         //case 'c': encryptSubCi ();
         //          break;
         //case 'd': decryptSubCi ();
@@ -32,13 +34,12 @@ int main()
     }
 }
 
-    
 void encryptRotationCi (void) {
     
     char alph[100] /*= "GETLIT"*/;
     int i; // counter
     int k = 1; // key value
-    int m = 71; // ASCII value of letter 'G'
+    int m; // ASCII value of letter 'G'
     
     sprintf(alph,"GETLIT"); /* storing 'GETLIT' into array.
                                With a key shift of +1, "HFUMJU" 
@@ -46,8 +47,28 @@ void encryptRotationCi (void) {
     
     // creating loop to apply algorithm that encrypts the phrase.
     for (i = 0; i < 6; i++) {
-        m = alph[i];
-        alph[i] = (((m - 65) + k) % 26) + 65; //caesar algorithm
+        m = alph[i]; // allocates variable 'm' to first value of alpharray[] (G), then increments to following letter.
+        alph[i] = (((m - 65) + k) % 26) + 65; //caesar algorithm for encryption
+        printf("%c", alph[i]);
+    }
+    return;
+}
+
+void decryptRotationCi (void) {
+    
+    char alph[100] /*= "GETLIT"*/;
+    int i; // counter
+    int k = 1; // key value
+    int m; // will be used for storing initial value of array
+    
+    sprintf(alph,"HFUMJU"); /* storing 'GETLIT' into array.
+                               With a key shift of -1, "GETLIT" 
+                               should be displayed. */
+    
+    // creating loop to apply algorithm that encrypts the phrase.
+    for (i = 0; i < 6; i++) {
+        m = alph[i]; // allocates variable 'm' to first value of alpharray[] (H), then increments to following letter.
+        alph[i] = (((m - 65) - k) % 26) + 65; //caesar algorithm for decryption
         printf("%c", alph[i]);
     }
     return;
