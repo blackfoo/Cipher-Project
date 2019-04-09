@@ -12,7 +12,7 @@ void decryptRotationCi (void);
 int main()
 {
     // create task menu for user.
-    char option = 'b';
+    char option = 'a';
     
     printf("\nWassup'?! Select a task to operate below by entering 'a', 'b','c' or 'd' followed by the 'Enter' key.\n\n");
     printf("(a) Encrypt a word with rotation cipher!\n");
@@ -41,12 +41,12 @@ void encryptRotationCi (void) {
     int k = 1; // key value
     int m; // ASCII value of letter 'G'
     
-    sprintf(alph,"GETLIT"); /* storing 'GETLIT' into array.
-                               With a key shift of +1, "HFUMJU" 
-                               should be displayed. */
+    sprintf(alph, "GETLIT"); /* storing 'GETLIT' into array.
+                              // With a key shift of +1, "HFUMJU" 
+                              // should be displayed. */
     
     // creating loop to apply algorithm that encrypts the phrase.
-    for (i = 0; i < 6; i++) {
+    for (i = 0; i < alph[i]; i++) {
         m = alph[i]; // allocates variable 'm' to first value of alpharray[] (G), then increments to following letter.
         alph[i] = (((m - 65) + k) % 26) + 65; //caesar algorithm for encryption
         printf("%c", alph[i]);
@@ -56,19 +56,22 @@ void encryptRotationCi (void) {
 
 void decryptRotationCi (void) {
     
-    char alph[100] /*= "GETLIT"*/;
+    char alph[100];
     int i; // counter
     int k = 1; // key value
     int m; // will be used for storing initial value of array
     
-    sprintf(alph,"HFUMJU"); /* storing 'GETLIT' into array.
-                               With a key shift of -1, "GETLIT" 
-                               should be displayed. */
+    sprintf(alph, "HFUMJU"); /* storing 'HFUMJU' into array.
+                             //  With a key shift of -1, "GETLIT" 
+                              // should be displayed. */
     
     // creating loop to apply algorithm that encrypts the phrase.
-    for (i = 0; i < 6; i++) {
+    for (i = 0; i < alph[i]; i++) {
         m = alph[i]; // allocates variable 'm' to first value of alpharray[] (H), then increments to following letter.
         alph[i] = (((m - 65) - k) % 26) + 65; //caesar algorithm for decryption
+        if (alph[i] < 65) { // to save code from breaking (hopefully)
+            alph[i] = 90;
+        }
         printf("%c", alph[i]);
     }
     return;
