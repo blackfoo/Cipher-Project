@@ -62,14 +62,16 @@ void encryptRotationCi (void) {
     
     fp = fopen("encrypt.txt", "r");
     
-    for (i = 0; i < 100; i++) {
-    fscanf(fp, "%c", &alph[i]);
-    }
-
     if (fp == NULL) {
         printf("Error: file not found.");
         return;
     }
+    
+    for (i = 0; i < 100; i++) {
+        fscanf(fp, "%c", &alph[i]);
+    }
+    
+    printf("%s\n\n", alph);
 
     // creating loop to apply algorithm that encrypts the phrase.
     for (i = 0; i < alph[i]; i++) {
@@ -89,21 +91,31 @@ void encryptRotationCi (void) {
 
 void decryptRotationCi (void) {
     
+    FILE *fp;
     char alph[100];
     int i; // counter
-    int k = 1; // key value
+    int k = 7; // key value
     int m; // will be used for storing initial value of array
     
-    sprintf(alph, "HFUMJU"); /* storing 'HFUMJU' into array.
-                                With a key shift of -1, "GETLIT" 
-                                should be displayed. */
+    fp = fopen("RoDecrypt.txt", "r");
     
-    // creating loop to apply algorithm that encrypts the phrase.
+    if (fp == NULL) {
+        printf("Error: file not found.");
+        return;
+    }
+    
+    for (i = 0; i < 100; i++) {
+        fscanf(fp, "%c", &alph[i]);
+    }
+    
+    printf("%s\n\n", alph);
+    
+    // creating loop to apply algorithm that decrypts the phrase.
     for (i = 0; i < alph[i]; i++) {
         m = alph[i]; // allocates variable 'm' to first value of alpharray[] (H), then increments to following letter.
         alph[i] = (((m - 65) - k) % 26) + 65; //caesar algorithm for decryption
         if (alph[i] < 65) { // to save code from breaking (hopefully)
-            alph[i] = 90;
+            alph[i] = alph[i] + 26;
         }
         printf("%c", alph[i]);
     }
