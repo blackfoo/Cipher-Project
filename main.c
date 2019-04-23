@@ -1,7 +1,7 @@
 /* Caesar Cipher project by Mitchell Greenan.
    
    Project will be designed to (hopefully) take in a message that is
-   input from user and then be encrypted.
+   input from user and then be encrypted. Then decrypt given message.
  */
 #include<stdio.h> 
 
@@ -15,7 +15,16 @@ void decryptSubCi (void); // function prototype for substitution cipher decrypti
 
 int main()
 {
-    char option = 'd'; // initialising type 'char' variable so user is able to type readable characters for menu selection.
+    FILE *fp;
+    char option; //= 'b'; // initialising type 'char' variable so user is able to type readable characters for menu selection.
+    
+    fp = fopen("menuselect.txt", "r");
+    
+    
+    if (fp == NULL) {
+        printf("Error: file not found.");
+        return 0;
+    }
     
     // create task menu for user.
     printf("\nWassup'?! Select a task to operate below by entering 'a', 'b','c' or 'd' followed by the 'Enter' key.\n\n");
@@ -24,7 +33,7 @@ int main()
     printf("(c) Encrypt a word with substitution cipher!\n");
     printf("(d) Decrypt a word with substitution cipher!\n\n");  // menu selection corresponds to each task. 
     
-    //scanf("%c", &option);
+    fscanf(fp, "%c", &option);
     
     switch (option) {
         case 'a': encryptRotationCi ();  // switch() case used for menu selection, followed 
@@ -35,22 +44,33 @@ int main()
                   break;
         case 'd': decryptSubCi ();
                   break;
+        default: printf("Invalid selection...\n\nTry again.");
     }
+    
+    fclose(fp);
 }
 
 // The following function will be used to encrypt using the rotation cipher.
 
 void encryptRotationCi (void) {
     
+    FILE *fp;
     char alph[100];
     int i; // counter
     int k = 1; // key value
     int m; // will be used in loop to rotate through 'alph[]' array.
     
-    sprintf(alph, "GETLIT"); /* storing 'GETLIT' into array.
-                                With a key shift of +1, "HFUMJU" 
-                                should be displayed. */
+    fp = fopen("encrypt.txt", "r");
     
+    for (i = 0; i < 100; i++) {
+    fscanf(fp, "%c", &alph[i]);
+    }
+
+    if (fp == NULL) {
+        printf("Error: file not found.");
+        return;
+    }
+
     // creating loop to apply algorithm that encrypts the phrase.
     for (i = 0; i < alph[i]; i++) {
         if ((alph[i] > 64) && (alph[i] < 91)) {
@@ -59,6 +79,9 @@ void encryptRotationCi (void) {
             printf("%c", alph[i]);
         }
     }
+    
+    fclose(fp);
+    
     return;
 }
 
