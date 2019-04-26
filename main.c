@@ -150,8 +150,8 @@ void decryptRotationCi (void) {
 void encryptSubCi (void) {
     
     FILE *fp;
-    char SPACE = 32;
-    char oldAlph[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; // array to store initial alphabet.
+    char oldAlphCap[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; // array to store initial alphabet.
+    char oldAlphLow[] = "abcdefghijklmnopqrstuvwxyz";
     char newAlph[] = "QWERTYUIOPASDFGHJKLZXCVBNM"; // array to store the "new alphabet" which will be used to scramble he given word.
     char subCi[100]; // array that will store the word to encrypt.
     int i, j; // will be used as counter for "oldAlph[]" and "newAlph[]".
@@ -180,10 +180,13 @@ void encryptSubCi (void) {
       
     for (i = 0; i < subCi[i]; i++) {
         for (j = 0; j < 26; j++) {
-             if (subCi[i] == oldAlph[j]) {
+             if (subCi[i] == oldAlphCap[j]) {
                 subCi[i] = newAlph[j];
                 break;
-            }          
+            } else if (subCi[i] == oldAlphLow[j]) {
+                subCi[i] = newAlph[j];
+                break;
+            }         
         }
     } 
     printf("%s", subCi);
@@ -199,7 +202,8 @@ void decryptSubCi (void) {
     
     FILE *fp;
     char oldAlph[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; // array to store initial alphabet.
-    char newAlph[] = "QWERTYUIOPASDFGHJKLZXCVBNM"; // array to store the "new alphabet" which will be used to scramble he given word.
+    char newAlphCap[] = "QWERTYUIOPASDFGHJKLZXCVBNM"; // array to store the "new alphabet" which will be used to scramble he given word.
+    char newAlphLow[] = "qwertyuiopasdfghjklzxcvbnm";
     char subCi[100]; // array that will store the word to decrypt.
     int i, j; // will be used as counter for "oldAlph[]" and "newAlph[]".
     
@@ -227,10 +231,13 @@ void decryptSubCi (void) {
       
     for (i = 0; i < subCi[i]; i++) {
         for (j = 0; j < 26; j++) {
-            if (subCi[i] == newAlph[j]) {
+            if (subCi[i] == newAlphCap[j]) {
                 subCi[i] = oldAlph[j];
                 break;
-            }          
+            } else if (subCi[i] == newAlphLow[j]) {
+                subCi[i] = oldAlph[j];
+                break;
+            }    
         }
     } 
     printf("%s", subCi);
