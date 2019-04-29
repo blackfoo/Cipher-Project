@@ -15,53 +15,58 @@ void decryptSubCi (void); // function prototype for substitution cipher decrypti
 
 int main()
 {
-    FILE *fp;
-    char option; //= 'b'; // initialising type 'char' variable so user is able to type readable characters for menu selection.
+    FILE *fp; // initialising fp as file pointer
+    char option; // initialising type 'char' variable so user is able to type readable characters for menu selection.
     
-    fp = fopen("menuselect.txt", "r");
+    fp = fopen("menuselect.txt", "r+"); // opening file to be read
     
-    
+    // incase file is missing.
     if (fp == NULL) {
         printf("Error: file not found.");
         return 0;
     }
     
     // create task menu for user.
-    printf("\nWassup'?! Select a task to operate below by entering 'a', 'b','c' or 'd' followed by the 'Enter' key.\n\n");
+    printf("\nWassup'?! Select a task to operate below by entering 'a', 'b','c' or 'd' in the file to be read.\n\n");
     printf("(a) Encrypt a word with rotation cipher!\n");
     printf("(b) Decrypt a word with rotation cypher!\n");          
     printf("(c) Encrypt a word with substitution cipher!\n");
     printf("(d) Decrypt a word with substitution cipher!\n\n");  // menu selection corresponds to each task. 
     
-    fscanf(fp, "%c", &option);
+    fscanf(fp, "%c", &option); // scans the file and stores vaiable into "option".
     
     switch (option) {
-        case 'a': encryptRotationCi ();  // switch() case used for menu selection, followed 
+        case 'a': printf("Task 1 selected. Enter word to be encrypted in given file.\n\n");
+                  encryptRotationCi ();  // switch() case used for menu selection, followed
                   break;                 // by function prototype for each case.
-        case 'b': decryptRotationCi ();
+        case 'b': printf("Task 2 selected. Enter word to be decrypted in given file.\n\n");
+                  decryptRotationCi ();
                   break;
-        case 'c': encryptSubCi ();
+        case 'c': printf("Task 3 selected. Enter word to be encrypted in given file.\n\n");
+                  encryptSubCi ();
                   break;
-        case 'd': decryptSubCi ();
+        case 'd': printf("Task 4 selected. Enter word to be decrypted in given file.\n\n");
+                  decryptSubCi ();
                   break;
         default: printf("Invalid selection...\n\nTry again.");
     }
     
-    fclose(fp);
+    fclose(fp); // closes file
 }
 
 // The following function will be used to encrypt using the rotation cipher.
 
 void encryptRotationCi (void) {
     
-    FILE *fp;
-    char alph[100];
-    char SPACE = 32;
+    FILE *fp, *keyInput; // initialising file pointers.
+    char alph[100]; // array will be used to store the word to be encrypted.
+    char SPACE = 32; // this will be used in stdout incase of spaces.
     int i; // counter
-    int k = 1; // key value
+    int k; // key value
     int m; // will be used in loop to rotate through 'alph[]' array.
     
     fp = fopen("encrypt.txt", "r"); // opening and reading file.
+    keyInput = fopen("key.txt", "r"); 
     
     // the following loop will let us know if file does not exist.
     if (fp == NULL) {
@@ -69,18 +74,19 @@ void encryptRotationCi (void) {
         return;
     }
     
-    // this loop to store message into array.
+    // this loop to scan file then store message into array.
     for (i = 0; i < 100; i++) {
         fscanf(fp, "%c", &alph[i]);
     }
     
-    // this will print message before encryption.
-    printf("%s\n\n", alph);
+    printf("%s\n\n", alph); // this will print message before encryption.
+    
+    fscanf(keyInput, "%d", &k); // scanning file for integer, then using input integer as the key.
 
     // creating loop to apply algorithm that encrypts the phrase.
     for (i = 0; i < alph[i]; i++) {
         if (alph[i] == 32) {
-            printf("%c", SPACE);
+            printf("%c", SPACE); // will print a space if found from the input.
         } else if ((alph[i] > 64) && (alph[i] < 91)) {
             m = alph[i]; // allocates variable 'm' to first value of alpharray[] (G), then increments to following letter.
             alph[i] = (((m - 65) + k) % 26) + 65; //caesar algorithm for encryption
@@ -131,13 +137,18 @@ void decryptRotationCi (void) {
         } else if ((alph[i] > 64) && (alph[i] < 91)) {
             m = alph[i]; // allocates variable 'm' to first value of alpharray[], then increments to following letter.
             alph[i] = (((m - 65) - k) % 26) + 65; //caesar algorithm for decryption
+            if (alph[i] < 65) {
+                alph[i] += 26; // this control statement stops code from breaking
+            }
+            printf("%c", alph[i]);
         }else if ((alph[i] > 96) && (alph[i] < 123)) {
             m = alph[i]; // allocates variable 'm' to first value of alpharray[], then increments to following letter.
             alph[i] = (((m - 96) - k) % 26) + 64; //caesar algorithm for decryption
-        } else if (alph[i] < 65) { // to save code from breaking (hopefully)
-            alph[i] = alph[i] + 26;
-        }
-        printf("%c", alph[i]);
+            if (alph[i] < 65) {
+                alph[i] += 26; // this control statement stops code from breaking
+            }
+            printf("%c", alph[i]);
+        } 
     }
     
     fclose(fp);
@@ -151,7 +162,7 @@ void encryptSubCi (void) {
     
     FILE *fp;
     char oldAlphCap[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; // array to store initial alphabet.
-    char oldAlphLow[] = "abcdefghijklmnopqrstuvwxyz";
+    char oldAlphLow[] = "abcdefghijklmnopqrstuvwxyz"; // this array initialised in case of lower case letters
     char newAlph[] = "QWERTYUIOPASDFGHJKLZXCVBNM"; // array to store the "new alphabet" which will be used to scramble he given word.
     char subCi[100]; // array that will store the word to encrypt.
     int i, j; // will be used as counter for "oldAlph[]" and "newAlph[]".
@@ -163,6 +174,7 @@ void encryptSubCi (void) {
         return;
     }
     
+    // loop to scan file then store in array
     for (i = 0; i < 100; i++) {
         fscanf(fp, "%c", &subCi[i]);
     }
@@ -203,7 +215,7 @@ void decryptSubCi (void) {
     FILE *fp;
     char oldAlph[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; // array to store initial alphabet.
     char newAlphCap[] = "QWERTYUIOPASDFGHJKLZXCVBNM"; // array to store the "new alphabet" which will be used to scramble he given word.
-    char newAlphLow[] = "qwertyuiopasdfghjklzxcvbnm";
+    char newAlphLow[] = "qwertyuiopasdfghjklzxcvbnm"; // created in case of lower case letters.
     char subCi[100]; // array that will store the word to decrypt.
     int i, j; // will be used as counter for "oldAlph[]" and "newAlph[]".
     
@@ -214,6 +226,7 @@ void decryptSubCi (void) {
         return;
     }
     
+    // loop to scan file then store in array
     for (i = 0; i < 100; i++) {
         fscanf(fp, "%c", &subCi[i]);
     }
