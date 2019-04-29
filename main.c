@@ -27,7 +27,7 @@ int main()
     }
     
     // create task menu for user.
-    printf("\nWassup'?! Select a task to operate below by entering 'a', 'b','c' or 'd' in the file to be read.\n\n");
+    printf("\nWassup'?! Select a task to operate below by entering:\n\n'a', 'b','c' or 'd' in the file to be read.\n\n");
     printf("(a) Encrypt a word with rotation cipher!\n");
     printf("(b) Decrypt a word with rotation cypher!\n");          
     printf("(c) Encrypt a word with substitution cipher!\n");
@@ -36,10 +36,10 @@ int main()
     fscanf(fp, "%c", &option); // scans the file and stores vaiable into "option".
     
     switch (option) {
-        case 'a': printf("Task 1 selected. Enter word to be encrypted in given file.\n\n");
+        case 'a': printf("Task 1 selected. Enter word to be encrypted in given file, along with the key in another.\n\n");
                   encryptRotationCi ();  // switch() case used for menu selection, followed
                   break;                 // by function prototype for each case.
-        case 'b': printf("Task 2 selected. Enter word to be decrypted in given file.\n\n");
+        case 'b': printf("Task 2 selected. Enter word to be decrypted in given file, plus key in the other.\n\n");
                   decryptRotationCi ();
                   break;
         case 'c': printf("Task 3 selected. Enter word to be encrypted in given file.\n\n");
@@ -62,7 +62,7 @@ void encryptRotationCi (void) {
     char alph[100]; // array will be used to store the word to be encrypted.
     char SPACE = 32; // this will be used in stdout incase of spaces.
     int i; // counter
-    int k; // key value
+    int k; // will be used for key.
     int m; // will be used in loop to rotate through 'alph[]' array.
     
     fp = fopen("encrypt.txt", "r"); // opening and reading file.
@@ -99,6 +99,7 @@ void encryptRotationCi (void) {
     }
     
     fclose(fp); // closes the file.
+    fclose(keyInput);
     
     return;
 }
@@ -107,14 +108,15 @@ void encryptRotationCi (void) {
 
 void decryptRotationCi (void) {
     
-    FILE *fp;
+    FILE *fp, *keyInput;
     char SPACE = 32;
     char alph[100];
     int i; // counter
-    int k = 1; // key value
+    int k; // key value
     int m; // will be used for storing initial value of array
     
     fp = fopen("RoDecrypt.txt", "r"); // open and reads file.
+    keyInput = fopen("key.txt", "r");
     
     // following loop implemented incase file not found.
     if (fp == NULL) {
@@ -129,6 +131,8 @@ void decryptRotationCi (void) {
     
     // prints message before decryption.
     printf("%s\n\n", alph);
+    
+    fscanf(keyInput, "%d", &k); // scans file for key selection
     
     // creating loop to apply algorithm that decrypts the phrase.
     for (i = 0; i < alph[i]; i++) {
@@ -152,6 +156,7 @@ void decryptRotationCi (void) {
     }
     
     fclose(fp);
+    fclose(keyInput);
     
     return;
 }
