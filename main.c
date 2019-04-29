@@ -13,6 +13,8 @@ void encryptSubCi (void); // function prototype for substitution cipher encrypti
 
 void decryptSubCi (void); // function prototype for substitution cipher decryption.
 
+void noKeyRoCi (void);
+
 int main()
 {
     FILE *fp; // initialising fp as file pointer
@@ -31,7 +33,8 @@ int main()
     printf("(a) Encrypt a word with rotation cipher!\n");
     printf("(b) Decrypt a word with rotation cypher!\n");          
     printf("(c) Encrypt a word with substitution cipher!\n");
-    printf("(d) Decrypt a word with substitution cipher!\n\n");  // menu selection corresponds to each task. 
+    printf("(d) Decrypt a word with substitution cipher!\n");  // menu selection corresponds to each task. 
+    printf("(e) Decryption without knowing the key\n\n");
     
     fscanf(fp, "%c", &option); // scans the file and stores vaiable into "option".
     
@@ -47,6 +50,9 @@ int main()
                   break;
         case 'd': printf("Task 4 selected. Enter word to be decrypted in given file.\n\n");
                   decryptSubCi ();
+                  break;
+        case 'e': printf("Task 5 selected. Enter word to be decrypted in given file.\n\n");
+                  noKeyRoCi ();
                   break;
         default: printf("Invalid selection...\n\nTry again.");
     }
@@ -141,16 +147,16 @@ void decryptRotationCi (void) {
         } else if ((alph[i] > 64) && (alph[i] < 91)) {
             m = alph[i]; // allocates variable 'm' to first value of alpharray[], then increments to following letter.
             alph[i] = (((m - 65) - k) % 26) + 65; //caesar algorithm for decryption
-            if (alph[i] < 65) {
-                alph[i] += 26; // this control statement stops code from breaking
-            }
+                if (alph[i] < 65) {
+                    alph[i] += 26; // this control statement stops code from breaking
+                }
             printf("%c", alph[i]);
-        }else if ((alph[i] > 96) && (alph[i] < 123)) {
+        } else if ((alph[i] > 96) && (alph[i] < 123)) {
             m = alph[i]; // allocates variable 'm' to first value of alpharray[], then increments to following letter.
             alph[i] = (((m - 96) - k) % 26) + 64; //caesar algorithm for decryption
-            if (alph[i] < 65) {
-                alph[i] += 26; // this control statement stops code from breaking
-            }
+                if (alph[i] < 65) {
+                    alph[i] += 26; // this control statement stops code from breaking
+                }
             printf("%c", alph[i]);
         } 
     }
@@ -259,6 +265,29 @@ void decryptSubCi (void) {
         }
     } 
     printf("%s", subCi);
+    
     fclose(fp);
+    
+    return;
+}
+
+void noKeyRoCi (void) {
+    
+    char alph[] = "UIF";
+    int i, k, m;
+    
+    for (k = 1; k < 26; k++) {
+        for (i = 0; i < alph[i]; i++) {
+            if ((alph[i] > 64) && (alph[i] < 91)) {
+                m = alph[i]; // allocates variable 'm' to first value of alpharray[], then increments to following letter.
+                alph[i] = (((m - 65) - k) % 26) + 65; //caesar algorithm for decryption
+                    if (alph[i] < 65) {
+                        alph[i] += 26; // this control statement stops code from breaking
+                    }
+            }
+        }
+    printf("key %d: %s\n", k, alph);
+    }
+
     return;
 }
